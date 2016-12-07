@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Home</title>
+	<link rel="stylesheet" href="../static/css/home.css" th:href="@{/css/home.css}"/>
+</head>
+<body>
+	<h1>Home</h1>
+	<h3> List of Report</h3>
+
+	<table class="table-list-report" th:object="${reports}">
+		<thead>
+			<tr>
+				<td>Index</td>
+				<td>Title</td>
+				<td>Header</td>
+				<td>Image_URL</td>
+				<td>Number of Bug</td>
+				<td>Footer</td>
+				<td colspan="2">POI</td>
+				<td colspan="2">JXLS</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="report, i : ${reports}" th:if="${report.numberbug > 5}">
+				<td th:text="${i.index} +1">1</td>
+				<td th:text="${report.title}">1</td>
+				<td th:text="${report.header}">1</td>
+				<td th:text="${report.imageURL}">1</td>
+				<td th:text="${report.numberbug}">1</td>
+				<td th:text="${report.footer}">1</td>
+				<td ><a href="#" th:href="@{/export(id=${report.idReport}, type=xls, by=poi)}" download="ReportByPOI.xls" target="_blank">Export to .xls</a></td>
+				<td ><a href="#" th:href="@{/export(id=${report.idReport}, type=xlsx, by=poi)}" download="ReportByPOI.xlsx" target="_blank">Export to .xlsx</a></td>
+				<td ><a href="#" th:href="@{/export(id=${report.idReport}, type=xls, by=jxls)}" download="ReportByJXLS.xls" target="_blank">Export to .xls</a></td>
+				<td ><a href="#" th:href="@{/export(id=${report.idReport}, type=xlsx, by=jxls)}" download="ReportByJXLS.xlsx" target="_blank">Export to .xlsx</a></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<form th:object="${report}" action="#" th:action="@{/create-report}" enctype="multipart/form-data" method="post">
+		<h3>Create new report</h3>
+		<table>
+			<tr>
+				<td>Title</td>
+				<td><input type="text" th:field="${report.title}"/></td>
+			</tr>
+			<tr>
+				<td>Header</td>
+				<td><input type="text" th:field="${report.header}"/></td>
+			</tr>
+			<tr>
+				<td>Image</td>
+				<td><input type="file" name="image" value="Get Image"/></td>
+			</tr>
+			<tr>
+				<td>Number of Bugs</td>
+				<td><input type="text" th:field="${report.numberbug}"/></td>
+			</tr>
+			<tr>
+				<td>Footer</td>
+				<td><input type="text" th:field="${report.footer}"/></td>
+			</tr>
+			<tr style="line-height: 50px;">
+				<td></td>
+				<td><input type="submit" value="Submit"/></td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>
